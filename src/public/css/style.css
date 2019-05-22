@@ -1,0 +1,10 @@
+/*!
+ *   Styles
+ *   License: Open source - MIT
+ *           Please visit http://opensource.org/licenses/MIT for more information
+ */
+ #outgoing {
+  width: 600px;
+  word-wrap: break-word;
+  white-space: normal;
+}
