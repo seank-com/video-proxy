@@ -1,0 +1,19 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach Node",
+      "port": 9222,
+      "timeout": 60000,
+      "cwd": "${workspaceFolder}",
+      "localRoot": "${workspaceFolder}",
+      "remoteRoot": "/www",
+      "protocol": "inspector"
+    }
+  ]
+}

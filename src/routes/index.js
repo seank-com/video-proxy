@@ -11,17 +11,24 @@ var options = {
   }
 };
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  console.log('root route!', __dirname);
-  res.sendFile('index.html', options, (err) => {
-    if (err) {
-      next(err);
-    } else {
-      console.log('Sent: ', 'index.html');
-    }  
-  });
-});
+function getPage(name) {
+  return (req, res, next) => {
+    res.sendFile(name, options, (err) => {
+      if (err) {
+        next(err);
+      } else {
+        console.log('Sent: ', name);
+      }  
+    });  
+  }
+}
+
+router.get('/', getPage('index.html'));
+router.get('/pilot', getPage('pilot.html'));
+router.get('/operator', getPage('operator.html'));
+router.get('/bpilot', getPage('bpilot.html'));
+router.get('/bcloud', getPage('bcloud.html'));
+router.get('/boperator', getPage('boperator.html'));
 
 router.get('/ping', function(req, res){
   res.status(200).send("pong!");
