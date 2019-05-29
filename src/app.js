@@ -85,6 +85,8 @@ var server = http.createServer(app)
   .on('listening', onListening)
   .listen(port);
 
+routes.registerUpgrade(server);
+
 // docker send a SIGTERM for graceful shutdown, 
 // lets atleast try to be a good citizen.
 process.on('SIGTERM', () => {

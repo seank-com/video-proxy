@@ -38,4 +38,12 @@ function init(app) {
   });
 }
 
+function registerUpgrade(server) {
+  // The upgrade handler should only be
+  // registered in one place. In our case,
+  // that is the apiRoutes.
+  apiRoutes.registerUpgrade(server);
+}
+
 module.exports.init = init;
+module.exports.registerUpgrade = registerUpgrade;

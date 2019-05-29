@@ -10,20 +10,20 @@ $ docker build -t video-proxy:latest .
 ## Run
 
 ```bash
-$ docker run -it --rm -e EXTERNAL_IP=10.1.8.175 -p 3478:3478 -p 3478:3478/udp bprodoehl/turnserver
-$ docker run -it --rm -p 80:4000 -p 8200-8300:8200-8300/udp video-proxy:latest
+$ docker run -it --rm -e EXTERNAL_IP=10.1.8.175 -p 3478:3478 -p 3478:3478/tcp bprodoehl/turnserver
+$ docker run -it --rm -p 80:4000 -p 8200-8202:8200-8202/tcp video-proxy:latest
 ```
 
 ## Debug
 
 ```bash
-$ docker run -it --rm -e "NODE_ENV=development" -p 80:4000 -p 8200-8300:8200-8300/udp -p 9222:9222 -v $(pwd)/src:/www/src video-proxy:latest /www/node_modules/.bin/nodemon --watch src/ --inspect-brk=0.0.0.0:9222 --nolazy src/app.js
+$ docker run -it --rm -e "NODE_ENV=development" -p 80:4000 -p 8200-8202:8200-8202/tcp -p 9222:9222 -v $(pwd)/src:/www/src video-proxy:latest /www/node_modules/.bin/nodemon --watch src/ --inspect-brk=0.0.0.0:9222 --nolazy src/app.js
 ```
 
 or
 
 ```bash
-$ docker run -it --rm -e "NODE_ENV=development" -p 80:4000 -p 8200-8300:8200-8300/udp -p 9222:9222 -v $(pwd)/src:/www/src video-proxy:latest /www/node_modules/.bin/nodemon --watch src/ --inspect=0.0.0.0:9222 --nolazy src/app.js
+$ docker run -it --rm -e "NODE_ENV=development" -p 80:4000 -p 8200-8202:8200-8202/tcp -p 9222:9222 -v $(pwd)/src:/www/src video-proxy:latest /www/node_modules/.bin/nodemon --watch src/ --inspect=0.0.0.0:9222 --nolazy src/app.js
 ```
 
 ## Overview
@@ -65,3 +65,4 @@ The blog post [Getting Start with WebRTC](https://www.html5rocks.com/en/tutorial
 * [http-errors](https://www.npmjs.com/package/http-errors) - Create HTTP errors with ease.
 * [simple-peer](https://www.npmjs.com/package/simple-peer) - simple WebRTC wrapper
 * [wrtc](https://www.npmjs.com/package/wrtc) - node WebRTC client
+* [ws](https://www.npmjs.com/package/ws) - web sockets

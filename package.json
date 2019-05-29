@@ -10,6 +10,7 @@
     "http-errors": "^1.7.1",
     "simple-peer": "^9.3.0",
     "wrtc": "^0.4.1",
+    "ws": "^5.2.2",
     "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
