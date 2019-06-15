@@ -1,65 +1,33 @@
+var options = null,
+  channel = '';
 
-var opt = {
-    initiator: true,
-    config: { 
-      iceServers: [
-        // google's default STUN server is filtered in China
-        { urls: [ 'stun:numb.viagenie.ca' ] }
-      ]
-    },
-    trickle: true 
-  }, peer = null;
+function CreateChannel() {
+  var xhr = new XMLHttpRequest();
 
-navigator.getUserMedia({ video: true, audio: false }, (stm) => {
+  xhr.open('GET', '/api/channel');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = () => {
+    if (xhr.status === 200) {
+      var res = JSON.parse(xhr.responseText);
+      channel = res.channel;
+      log("Created Channel " + channel);
+      rtcBegin('pilot', channel, options);
+    } else {
+      log("AJAX FAILED: " + xhr.status);
+    }
+  };
+  xhr.send();
+}  
+
+navigator.getUserMedia({ video: true, audio: false }, (stream) => {
   var video = document.querySelector('video');
 
-  opt.stream = stm;
-  peer = new SimplePeer(opt);
-
-  peer.on('error', (err) => {
-    console.log('ERROR: ', err);
-  });
-  
-  peer.on('signal', (data) => {
-
-    console.log('SIGNAL', JSON.stringify(data));
-    if (data.type && data.type === 'offer') {
-      var xhr = new XMLHttpRequest();
-
-      xhr.open('POST', 'api/pilot');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.onload = () => {
-        var result = "";
-
-        if (xhr.status === 200) {
-          var response = JSON.parse(xhr.responseText);
-          if (response.answer) {
-            result = "created channel " + response.channel;
-            peer.signal(response.answer);
-          } else {
-            result = "ERROR: expected answer";
-          }
-        } else {
-          result = "AJAX FAILED: " + xhr.status;
-        }
-        document.querySelector('#outgoing').textContent = result;
-      };
-      xhr.send(JSON.stringify(data));
-    }
-  });
-  
-  peer.on('connect', () => {
-    console.log('CONNECT: sending data')
-    peer.send('whatever' + Math.random())
-  });
-  
-  peer.on('data', (data) => {
-    console.log('DATA: ', data)
-  });
-
-  video.srcObject = stm;
+  options = getOptions(true, stream);
+  video.srcObject = stream;
   video.play();
+  CreateChannel();
 }, (err) => {
-  console.log('getUserMedia failed', err)
+  log('getUserMedia failed', err)
 });
+
 

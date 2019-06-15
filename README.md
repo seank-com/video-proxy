@@ -66,3 +66,4 @@ The blog post [Getting Start with WebRTC](https://www.html5rocks.com/en/tutorial
 * [simple-peer](https://www.npmjs.com/package/simple-peer) - simple WebRTC wrapper
 * [wrtc](https://www.npmjs.com/package/wrtc) - node WebRTC client
 * [ws](https://www.npmjs.com/package/ws) - web sockets
+* [canvas](https://www.npmjs.com/package/canvas) - node canvas support

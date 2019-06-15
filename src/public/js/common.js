@@ -43,8 +43,7 @@ function rtcBegin(name, channel, options, onStream) {
 
   var ws = new WebSocket(socket);
   ws.on = ws.addEventListener;
-
-  var peer = new SimplePeer(options);
+  var peer = null;
 
   function closeConnections() {
     if (ws) {
@@ -63,47 +62,53 @@ function rtcBegin(name, channel, options, onStream) {
     log(`${title} WS ERROR:`, event);
   });
 
-  peer.on('error', (err) => {
-    log(`${title} ERROR:`, err);
-  });
-
   ws.on('message', (event) => {
     log(`${title} WS MESSAGE:`, event.data);
 
     peer.signal(JSON.parse(event.data));
   });
 
-  peer.on('signal', (data) => {
-    log(`${title} SIGNAL:`, data);
-    ws.send(JSON.stringify(data));
-  });
-
   ws.on('open', () => {
     log(`${title} WS OPEN:`);
-    heartbeat();
+
+    peer = new SimplePeer(options);
+
+    peer.on('error', (err) => {
+      log(`${title} ERROR:`, err);
+    });
+  
+    peer.on('signal', (data) => {
+      log(`${title} SIGNAL:`, data);
+      ws.send(JSON.stringify(data));
+    });
+  
+    peer.on('connect', () => {
+      log(`${title} CONNECT:`);
+    });
+   
+    peer.on('close', () => {
+      log(`${title} CLOSE:`);
+      peer = null;
+      closeConnections();
+    });
+  
+    peer.on('data', (data) => {
+      log(`${title} DATA:` + JSON.stringify(data));
+    });
+  
+    peer.on('stream', (onStream) ? onStream : (stream) => {
+      log(`${title} STREAM:`);
+    });
+  
+    peer.on('track', (track) => {
+      log(`${title} TRACK:`);
+    });
   });
   
-  peer.on('connect', () => {
-    log(`${title} CONNECT:`);
-  });
- 
   ws.on('close', (code, message) => {
     log(`${title} WS CLOSE:`, code, message);
     ws = null;
     closeConnections();
   });
 
-  peer.on('close', () => {
-    log(`${title} CLOSE:`);
-    peer = null;
-    closeConnections();
-  })
-
-  peer.on('data', (data) => {
-    log(`${title} DATA:` + JSON.stringify(data));
-  });
-
-  peer.on('stream', (onStream) ? onStream : (stream) => {
-    log(`${title} STREAM:`);
-  });
 }

@@ -5,14 +5,12 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
   </head>
   <body>
-    <form>
-      <label for="incoming">Enter channel</label>
-      <textarea id="incoming"></textarea>
-      <button type="submit">connect</button>
-    </form>
-    <pre id="outgoing"></pre>
-    <video muted></video>
+    <textarea id="incoming"></textarea><br>
+    <button id="connect">Connect</button><br>
+    <video muted width="320" height="240"></video><br>
+    <pre id="outgoing"></pre><br>
     <script src="js/simplepeer.min.js"></script>
+    <script src="js/common.js"></script>
     <script src="js/operator.js"></script>
   </body>
 </html>
